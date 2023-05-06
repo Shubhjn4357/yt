@@ -1,0 +1,271 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Yt DOwnloader</title>
+</head>
+<style>
+body {
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: auto;
+    background: linear-gradient(315deg, rgba(101,0,94,1) 3%, rgba(60,132,206,1) 38%, rgba(48,238,226,1) 68%, rgba(255,25,25,1) 98%);
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 1000% 0 0;
+    position: fixed;
+    width: 200%;
+    height: 12em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s -1s reverse infinite;
+    opacity: 0.9;
+}
+
+@keyframes wave {
+    2% {
+        transform: translateX(1);
+    }
+
+    25% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(-50%);
+    }
+
+    75% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(1);
+    }
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+.d-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loader{
+    width:100%;
+    height:100%;
+}
+.loader .child{
+    width:100px;
+    height: 100px;
+    border-bottom: 5px ridge red;
+    border-radius: 100%;
+    animation: rotate 1s infinite ease-in;
+}
+.loader .child2{
+    width:100px;
+    height:100px;
+    border-top: 5px ridge red;
+    border-radius: 100%;
+    animation: reverse-rotate 1s infinite ease-out;
+}
+@keyframes rotate {
+    0%{
+        transform: rotate(0);
+    }
+    10%{
+        transform: rotate(5deg);
+    }
+    30%{
+        transform: rotate(30deg);
+    }
+    50%{
+        transform: rotate(100deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+    
+}
+@keyframes reverse-rotate {
+    0%{
+        transform: rotate(0);
+    }
+    50%{
+        transform: rotate(-5deg);
+    }
+    80%{
+        transform: rotate(-30deg);
+    }
+    90%{
+        transform: rotate(-100deg);
+    }
+    100%{
+        transform: rotate(-360deg);
+    }
+    
+}
+</style>
+<body>
+    <div class="container-fluid p-0">
+        <div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar sticky-top navbar-light bg-danger">
+                    <div class="container-fluid">
+                      <a class="navbar-brand text-light" href="/">YT Downloader</a>
+                    </div>
+                  </nav>
+            </div>
+            <div class="col p-2 my-5">
+                <form id="form-model" class="form p-4 d-flex d-center border-3 ">
+                    <div class="form-floating mx-2">
+                        <input class="form-control rounded-pill" type="text" onChange="ChangeHandler()" placeholder="enter Your Link" id="paste-link"/>
+                        <label for="paste-link">Enter Link Here</label>
+                    </div>
+                    <button class="btn btn-lg btn-outline-danger d-center mx-2 fs-5 rounded-pill" onclick="SearchFile()">
+                        <span class="material-icons">
+                            search
+                        </span>
+                       Submit</button>
+                </form>                      
+             </div>
+             <div id="loader" class="loader d-center d-none"><div class="child"></div><div class="child2"></div></div>
+
+             <div class="d-center" id="responsecard">
+             </div>
+        </div>
+    </div>
+    <script>
+        var Link
+        const forms=document.getElementById("form-model")
+        function handleForm(event) { event.preventDefault(); event.stopPropagation();} 
+        forms.addEventListener('submit', handleForm);
+        const ChangeHandler=()=>{
+            Link=document.getElementById("paste-link").value;
+        }
+        const Download=()=>{
+            const url=document.getElementById("selector").value;
+            const a = document.createElement('a')
+            a.href = url
+            a.download = url.split('/').pop()
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+        }
+        
+        const SearchFile=async()=>{
+            let card=document.getElementById('responsecard')
+            let loader=document.getElementById('loader')
+            try{
+                loader.classList.add("d-flex")
+                loader.classList.remove("d-none")
+              const res = await fetch("http://localhost:5000/api/post",{
+                method:"POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    link:Link
+                })
+                })
+                const response=await res.json()
+                console.log(response)
+                const box = `
+                <div id='card' class='card p-2 rounded-3'>
+                    <div class="card-content d-center justify-content-around">
+                        <img class="rounded-circle card-image" style="width: 100px; height:100px;" src=${response.vid.thumbnail} alt="thumb"/>
+                        <div class="fs-5 ms-4 ">
+                            <div class="card-title my-1">
+                                ${response.title}
+                            </div>
+
+                            <div class="card-title fs-6 text-secondary my-1">
+                                ${response.vid.duration}
+                            </div>
+                            <select name="selector" class="form-select-sm" id="selector">
+                                ${response.download.map((i,k)=>{
+                                    return `<option key=${k} value=${i.ul}>${i.type}</option>`
+                                })
+                            }
+                            </select>
+                            <div class="text-secondary fs-6 mt-2">
+                                <button class="btn btn-danger rounded-pill" onclick=Download()>Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                    card.innerHTML = box;
+                    loader.classList.remove("d-flex")
+                    loader.classList.add("d-none")
+            }
+            catch(err){
+                loader.classList.remove("d-flex")
+                loader.classList.add("d-none")
+                console.log(err)
+            }
+        } 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
